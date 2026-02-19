@@ -6,24 +6,15 @@ from imapclient import IMAPClient
 import pyzmail
 from dotenv import load_dotenv
 
-# -------------------------
-# Load Environment Variables
-# -------------------------
 load_dotenv()
 
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-# -------------------------
-# URL Extraction
-# -------------------------
 def extract_urls(text):
     url_pattern = r'https?://[^\s]+'
     return re.findall(url_pattern, text)
 
-# -------------------------
-# Phishing Keyword Detection
-# -------------------------
 def detect_phishing_keywords(text):
     keywords = ["urgent", "verify", "click here", "update", "account suspended"]
     found = []
@@ -34,9 +25,7 @@ def detect_phishing_keywords(text):
 
     return found
 
-# -------------------------
-# Main Email Fetcher
-# -------------------------
+
 def fetch_emails():
     try:
         with IMAPClient("imap.gmail.com", ssl=True, timeout=30) as server:
@@ -128,15 +117,10 @@ def fetch_emails():
                         except Exception as attach_error:
                             print("Error saving attachment:", attach_error)
 
-                # -------------------------------
-                # Print structured data
-                # -------------------------------
+          
                 print("\nStructured Email Data:")
                 print(email_data)
 
-                # -------------------------------
-                # MODULE 3 — Threat Analysis
-                # -------------------------------
                 risk_score, threat_level, reasons = analyze_threat(
                     email_data,
                     ATTACHMENTS_DIR
@@ -152,7 +136,6 @@ def fetch_emails():
                 else:
                     print("No major threat indicators found.")
 
-                # Small delay to avoid rate limit
                 time.sleep(1)
 
     except Exception as e:
