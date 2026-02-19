@@ -25,7 +25,6 @@ Threat Intelligence Engine with scoring system
 pip install -r requirements.txt
 python fetch_emails.py
 
-⚠️ Educational purpose only.
 
 
 
