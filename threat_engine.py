@@ -2,13 +2,6 @@ import os
 import math
 from urllib.parse import urlparse
 
-# =====================================================
-# MODULE 3 — THREAT INTELLIGENCE ENGINE
-# =====================================================
-
-# -----------------------------------------------------
-# 1️⃣ Dangerous File Extensions
-# -----------------------------------------------------
 DANGEROUS_EXTENSIONS = [
     "exe", "bat", "cmd", "js", "vbs",
     "scr", "ps1", "jar", "apk", "msi"
@@ -29,9 +22,6 @@ def check_dangerous_attachments(attachments):
     return risk, reasons
 
 
-# -----------------------------------------------------
-# 2️⃣ Suspicious Shortened URL Detection
-# -----------------------------------------------------
 SUSPICIOUS_DOMAINS = [
     "bit.ly",
     "tinyurl.com",
@@ -61,9 +51,6 @@ def check_suspicious_urls(urls):
     return risk, reasons
 
 
-# -----------------------------------------------------
-# 3️⃣ Domain Mismatch Detection (Spoofing Check)
-# -----------------------------------------------------
 def check_domain_mismatch(sender, urls):
     risk = 0
     reasons = []
@@ -92,10 +79,6 @@ def check_domain_mismatch(sender, urls):
 
     return risk, reasons
 
-
-# -----------------------------------------------------
-# 4️⃣ Entropy Calculation (Malware Indicator)
-# -----------------------------------------------------
 def calculate_entropy(filepath):
     try:
         with open(filepath, "rb") as f:
@@ -131,7 +114,6 @@ def check_attachment_entropy(attachments, attachments_folder):
         if os.path.exists(filepath):
             entropy = calculate_entropy(filepath)
 
-            # High entropy threshold (common in packed/encrypted malware)
             if entropy > 7.5:
                 risk += 35
                 reasons.append(
@@ -140,15 +122,11 @@ def check_attachment_entropy(attachments, attachments_folder):
 
     return risk, reasons
 
-
-# -----------------------------------------------------
-# 5️⃣ Final Threat Scoring System
-# -----------------------------------------------------
 def analyze_threat(email_data, attachments_folder):
     total_risk = 0
     all_reasons = []
 
-    # Run all detection checks
+
     r1, reason1 = check_dangerous_attachments(email_data.get("attachments", []))
     r2, reason2 = check_suspicious_urls(email_data.get("urls", []))
     r3, reason3 = check_domain_mismatch(
@@ -160,11 +138,11 @@ def analyze_threat(email_data, attachments_folder):
         attachments_folder
     )
 
-    # Sum up risk scores
+ 
     total_risk = r1 + r2 + r3 + r4
     all_reasons = reason1 + reason2 + reason3 + reason4
 
-    # Determine threat level
+
     if total_risk >= 70:
         threat_level = "HIGH"
     elif total_risk >= 40:
